@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Downloading gitwar..."
+curl -s https://raw.github.com/gitwar/gitwar/master/gitwar > gitwar && chmod +x gitwar
