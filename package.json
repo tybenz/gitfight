@@ -1,0 +1,29 @@
+{
+  "name": "gitfight",
+  "version": "0.1.0",
+  "description": "Head-to-head text-based boxing game. Built on gitwar.",
+  "main": "gitfight.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tybenz/gitfight.git"
+  },
+  "keywords": [
+    "gitwar",
+    "git",
+    "game"
+  ],
+  "author": "Tyler Benziger",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tybenz/gitfight/issues"
+  },
+  "homepage": "https://github.com/tybenz/gitfight",
+  "dependencies": {
+    "gitwar": "~0.1.0",
+    "lodash-node": "~2.4.1",
+    "colors": "~0.6.2"
+  }
+}
