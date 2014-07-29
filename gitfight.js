@@ -51,8 +51,8 @@ var Gitfight = {
                     });
                 }
             } else {
-                if ( head.user == Gitwar.me ) {
-                    return Gitfight.wait();
+                if ( !head.user && Gitwar.users[ 0 ] == Gitwar.me || head.user == Gitwar.me ) {
+                    return Gitfight.wait( true );
                 } else {
                     return Gitfight.takeTurn();
                 }
@@ -84,7 +84,7 @@ var Gitfight = {
             }
         },
         score: function() {
-            return 'SCORE' + '\n' +
+            return '\nSCORE' + '\n' +
                 Gitwar.me.green + ': ' + Gitfight.score.me + '\n' +
                 Gitwar.opponent.red + ': ' + Gitfight.score.opponent;
         },
@@ -100,15 +100,17 @@ var Gitfight = {
         Gitwar.logs().then( function( commits ) {
             _.each( commits, function( commit, i ) {
                 // Validate
-                if ( commits[ i - 1 ] && commit.user == commits[ i - 1 ].user ) {
+                if ( i > 1 && commits[ i - 1 ] && commit.user == commits[ i - 1 ].user ) {
                     // ERROR - need to take turns
                     throw "Invalid log... You may need to restart your game.";
                 }
 
-                if ( commit.user == Gitwar.me ) {
-                    Gitfight.score.opponent -= commit.hitPoints;
-                } else {
-                    Gitfight.score.me -= commit.hitPoints;
+                if ( commit.user ) {
+                    if ( commit.user == Gitwar.me ) {
+                        Gitfight.score.opponent -= commit.hitPoints;
+                    } else {
+                        Gitfight.score.me -= commit.hitPoints;
+                    }
                 }
             }).reverse();
         })
@@ -172,13 +174,17 @@ var Gitfight = {
         }
     },
 
-    wait: function() {
+    wait: function( first ) {
         print( 'wait' );
 
-        Gitwar.sync()
-        .then( function() {
-            return Gitwar.poll( Gitfight.takeTurn );
-        });
+        if ( first ) {
+          Gitwar.poll( Gitfight.takeTurn );
+        } else {
+          Gitwar.sync()
+          .then( function() {
+              return Gitwar.poll( Gitfight.takeTurn );
+          });
+        }
     },
 
     takeTurn: function( lastTurn ) {
@@ -239,7 +245,6 @@ var Gitfight = {
 
             rl.close();
         });
-
     }
 };
 
